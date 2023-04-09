@@ -33,7 +33,7 @@
             android:name="flutterEmbedding"
             android:value="2" />
        <meta-data android:name="com.google.android.geo.API_KEY"
-           android:value="AIzaSyBRlZ4y4dsaddr4UUYzc9ddtNoFLzc2_k4"/>
+           android:value="<API KEY from GOOGLE CLOUD STORAGE>"/>
     </application>
     <queries>
         <intent>
