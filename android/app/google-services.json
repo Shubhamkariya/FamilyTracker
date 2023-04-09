@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "472552238400",
+    "firebase_url": "https://locationapp-6f42a-default-rtdb.firebaseio.com",
+    "project_id": "locationapp-6f42a",
+    "storage_bucket": "locationapp-6f42a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:472552238400:android:916766e54f6494f5bb1ea5",
+        "android_client_info": {
+          "package_name": "com.example.untitled2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "472552238400-lop81tefgsi84nkhllfv9a2vg7mn7sca.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy4w2RRL5S-Fo-BGF470gV7itJLnTfOV8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "472552238400-lop81tefgsi84nkhllfv9a2vg7mn7sca.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "472552238400-pu1192i09muigukhb24bk4lhsba2olm0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.untitled2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
