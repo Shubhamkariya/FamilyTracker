@@ -7,19 +7,31 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
-import 'package:untitled2/GoogleMap.dart';
+import 'package:untitled2/Google/GoogleMap.dart';
 import 'package:untitled2/UserAccount/AlreadyHaveanaccount.dart';
 import 'package:untitled2/UserAccount/register.dart';
 
 import 'dart:convert';
 
-import '../Constants.dart';
+import '../Utils/Constants.dart';
 
 
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    UserCheck();
+  }
   @override
   Widget build(BuildContext context) {
     String email = '', pass = '';
@@ -116,12 +128,11 @@ class Login extends StatelessWidget {
                                                   color: myFocusNode.hasFocus ? Colors.blue : Colors.black
                                               )
                                           ))))),
-
                                 SizedBox(
                                   height: 10, // <-- Your height
                                   //  signInWithGoogle();
                                 ),
-                              Hero(
+                                Hero(
                                 tag: "login_btn",
                                 child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
@@ -171,8 +182,7 @@ class Login extends StatelessWidget {
                             ),
                           ),
                         ),
-
-                       SizedBox(
+                        SizedBox(
                           height: 20, // <-- Your height
                           //  signInWithGoogle();
                         ),
@@ -198,6 +208,7 @@ class Login extends StatelessWidget {
            ))),
         )])));
   }
+
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -215,5 +226,25 @@ class Login extends StatelessWidget {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
+  void UserCheck() {
+    FirebaseAuth.instance
+        .authStateChanges()
+        .listen((User? user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print('User is signed in!');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MapSample()),
+        );
+      }
+    });
 
+    // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => MapSample()),
+      // );
+
+  }
 }
