@@ -1,11 +1,15 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:untitled2/MembersDetails/Camera.dart';
+import 'package:untitled2/MembersDetails/CodeScanner.dart';
 
 class MemberFile extends StatefulWidget {
-  const MemberFile({Key? key}) : super(key: key);
 
+
+  const MemberFile({Key? key, required this.familyId}) : super(key: key);
+  final String familyId;
   @override
   _MemberFileState createState() => _MemberFileState();
 }
@@ -17,16 +21,15 @@ class _MemberFileState extends State<MemberFile> {
   @override
   Widget build(BuildContext context) {
     String textValue="Code";
+    String familyId= widget.familyId;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: Text("Add Members"),
           actions: <Widget>[
-            IconButton(icon: Icon(Icons.add), onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CameraPage(cameras: cameras)),
-              );
+            IconButton(icon: Icon(Icons.add), onPressed: ()  {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => CodeScanner()));
             }),
           ]
       ),
@@ -43,7 +46,7 @@ class _MemberFileState extends State<MemberFile> {
           children: <Widget>[
             SizedBox(height: 30),
              QrImage(
-              data: "Shubham",
+              data: familyId,
               size: 150,
               backgroundColor: Colors.white,
               // You can include embeddedImageStyle Property if you
@@ -75,7 +78,7 @@ class _MemberFileState extends State<MemberFile> {
               ),),
 
             SizedBox(height: 30),
-            Text(textValue,
+            Text(familyId,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 40,

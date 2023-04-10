@@ -60,6 +60,14 @@ dependencies:
   random_string: ^2.3.1
   qr_flutter: ^4.0.0
   camera: ^0.10.3+2
+  qr_code_scanner: ^1.0.1
+  http: ^0.13.5
+  flutter_slidable: ^2.0.0
+  floating_bottom_navigation_bar: ^1.5.2
+  carousel_slider: ^4.2.1
+  shared_preferences: ^2.1.0
+  intl_phone_field: ^3.1.0
+
 
 
 

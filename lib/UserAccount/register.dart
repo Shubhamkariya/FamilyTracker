@@ -9,11 +9,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
-import 'package:untitled2/GoogleMap.dart';
+import 'package:untitled2/Google/GoogleMap.dart';
 import 'package:untitled2/UserAccount/AlreadyHaveanaccount.dart';
 import 'package:untitled2/UserAccount/Login.dart';
 
-import '../Constants.dart';
+import '../Utils/Constants.dart';
 
 class MyRegister extends StatefulWidget {
   const MyRegister({Key? key}) : super(key: key);
@@ -289,6 +289,7 @@ class _MyRegisterState extends State<MyRegister> {
       // imageUrl = await referenceImageToUpload.getDownloadURL();
       double longitude= 0.00;
       double latitude= 0.00;
+      int value =0;
       print(randomAlphaNumeric(10)); // random sequence of 10 alpha numeric i.e. aRztC1y32B
       String random = randomAlphaNumeric(10);
       DatabaseReference dbRef = FirebaseDatabase.instance.ref().child("User").child(uid.toString());
@@ -299,10 +300,22 @@ class _MyRegisterState extends State<MyRegister> {
         'token':fcmToken,
         'Longitude':longitude,
         'Latitude':latitude,
-        'FamilyId':random
+        'PersonalFamilyId':random
         // 'ImageUrl':imageUrl
       };
       await dbRef.set(students);
+
+      DatabaseReference ref = FirebaseDatabase.instance.ref().child("Family").child(random);
+      DatabaseEvent event = await ref.once();
+      print(event.snapshot.children.length);
+      value = event.snapshot.children.length;
+
+
+      DatabaseReference dbRef2 = FirebaseDatabase.instance.ref().child("Family").child(random);
+      Map<String, dynamic> students2 = {
+        'userId_$value':uid.toString(),
+      };
+      await dbRef2.set(students2);
 
       Navigator.push(
         context,

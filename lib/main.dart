@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled2/GoogleMap.dart';
-import 'package:untitled2/LocationPage.dart';
+import 'package:untitled2/Google/GoogleMap.dart';
+import 'package:untitled2/Google/LocationPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:untitled2/UserAccount/Login.dart';
 import 'firebase_options.dart';

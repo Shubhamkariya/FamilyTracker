@@ -15,6 +15,8 @@ class CameraPage extends StatefulWidget {
 class _CameraPageState extends State<CameraPage> {
   late CameraController _cameraController;
   bool _isRearCameraSelected = true;
+  double deviceHeight(BuildContext context) => MediaQuery.of(context).size.height;
+  double deviceWidth(BuildContext context) => MediaQuery.of(context).size.width;
 
   @override
   void dispose() {
@@ -66,12 +68,12 @@ class _CameraPageState extends State<CameraPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
+        body:SafeArea(
           child: Stack(children: [
             (_cameraController.value.isInitialized)
                 ? CameraPreview(_cameraController)
                 : Container(
-                color: Colors.black,
+                color: Colors.white,
                 child: const Center(child: CircularProgressIndicator())),
             Align(
                 alignment: Alignment.bottomCenter,
