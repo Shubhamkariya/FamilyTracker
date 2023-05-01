@@ -31,26 +31,26 @@ class _DashboardState extends State<Dashboard> {
     // TODO: implement initState
     super.initState();
     //tokenUpdate();
+    gettingValue();
   }
 
   @override
   Query dbRef = FirebaseDatabase.instance.ref().child('User');
   DatabaseReference reference = FirebaseDatabase.instance.ref().child('User');
-  Future<void> gettingValue(String FamilyId) async {
-
+  Future<void> gettingValue() async {
+    String FamilyId = widget.familyId;
+    Query dbRef = FirebaseDatabase.instance.ref().child('User');
+    DatabaseReference reference = FirebaseDatabase.instance.ref().child('User');
     Query ListNodeValue = FirebaseDatabase.instance.ref().child('Family').child(FamilyId.toString());
     int value =0;
-    print("running function ");
+    print("Dashboard running function ");
     DatabaseEvent event = await ListNodeValue.once();
-    print(event.snapshot.children.length);
     value = event.snapshot.children.length;
-    ListNodeValue.once().then((DatabaseEvent snapshot){
-      print("Length"+event.snapshot.children.length.toString());
-      for (var val in event.snapshot.children){
-        print(val.value);
-        UserID.add(val.value.toString());
-      }
-    });
+    print("Dashboard Length"+value.toString());
+    print("Dashboard Family Code"+FamilyId.toString());
+    if(value == 1)
+      showToast("No User Found");
+
   }
   listItem({required Map student}) {
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -60,6 +60,7 @@ class _DashboardState extends State<Dashboard> {
       String FamilyCode = widget.familyId;
       if (student['userId'] != uid){
         if (FamilyCode == student['PersonalFamilyId']) {
+          print("Length"+student.length.toString());
           return
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -96,7 +97,6 @@ class _DashboardState extends State<Dashboard> {
         }
       }
       else {
-        showToast("No User present");
         return SizedBox(
           height: 0.0,
         );
@@ -223,7 +223,6 @@ class _DashboardState extends State<Dashboard> {
           .toString());
       for (var val in event.snapshot.children) {
         if (val.value.toString() == UserId) {
-
           FirebaseDatabase.instance.ref()
               .child('Family')
               .child(FamilyCode)
@@ -239,6 +238,9 @@ class _DashboardState extends State<Dashboard> {
             'PersonalFamilyId': random
           };
           await dbRef2.update(students2);
+
+
+
           int valueInt;
           DatabaseReference ref = FirebaseDatabase.instance
               .ref().child("Family").child(random);

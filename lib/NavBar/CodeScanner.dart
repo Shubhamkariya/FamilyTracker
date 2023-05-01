@@ -129,14 +129,23 @@ class _CodeScannerState extends State<CodeScanner> {
     final User? user = auth.currentUser;
     final uid = user?.uid;
     int value=0;
+    final String CurrentCode ;
 
+      Query ListNodeValue = FirebaseDatabase.instance.ref().child('Family').child(code.toString());
+      print("running function ");
+      DatabaseEvent event = await ListNodeValue.once();
+      print(event.snapshot.children.length);
+      value = event.snapshot.children.length;
+      ListNodeValue.once().then((DatabaseEvent snapshot){
+        print("Length"+event.snapshot.children.length.toString());
+      });
 
-
+      showToast("CODE WHICH IS BEEN ADDED+$code");
 
       DatabaseReference dbRef2 = FirebaseDatabase.instance.ref()
           .child("Family")
           .child(code.toString());
-      Map<String, dynamic> students2 = {
+      Map<String, String> students2 = {
         'userId_$value': uid.toString(),
       };
       await dbRef2.update(students2)

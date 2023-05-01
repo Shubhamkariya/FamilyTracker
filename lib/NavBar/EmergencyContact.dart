@@ -2,8 +2,11 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:untitled2/Google/GoogleMap.dart';
 import 'package:untitled2/NavBar/CodeScanner.dart';
 import 'package:untitled2/UserAccount/AlreadyHaveanaccount.dart';
+import 'package:untitled2/Utils/Toast.dart';
 
 import '../Utils/Constants.dart';
 
@@ -214,7 +217,13 @@ class _EmergencyContactState extends State<EmergencyContact> {
       'EmergencyContact2':"+91"+emergencyContactValue2.toString(),
       'EmergencyContact3':"+91"+emergencyContactValue3.toString(),
     };
-    await dbRef.update(students);
+    await dbRef.update(students).whenComplete(() {
+     showToast("Emergency Contact Added");
+     Navigator.push(
+       context,
+       MaterialPageRoute(builder: (context) => const MapSample()),
+     );
+    });
 
   }
   Future<void> SetData() async {

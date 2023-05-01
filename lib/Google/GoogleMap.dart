@@ -34,10 +34,8 @@ class MapSample extends StatefulWidget {
 class _MapSampleState extends State<MapSample> {
   List<String> recipent =[];
   Completer<GoogleMapController> _controller = Completer();
-
   double? latitude;
   double? longitude;
-
   MapType _currentMapType = MapType.normal;
   bool isPlayed = true;
   AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
@@ -48,8 +46,12 @@ class _MapSampleState extends State<MapSample> {
   late GoogleMapController mapController;
   final Set<Marker> markers = new Set();
   final Set<LatLng> LatLag = new Set();
+  final List<Map<String,dynamic>> NameLoc = [];
+
   final Set<String> UserFamily = new Set();
   final Set<String> UserID = new Set();
+  final Set<String> Name = new Set();
+
   String name ="";
   String email ="";
   String FirstLetter ="";
@@ -79,7 +81,7 @@ class _MapSampleState extends State<MapSample> {
     print(event.snapshot.children.length);
     value = event.snapshot.children.length;
     ListNodeValue.once().then((DatabaseEvent snapshot){
-      print("Length"+event.snapshot.children.length.toString());
+      // print("Length"+event.snapshot.children.length.toString());
       for (var val in event.snapshot.children){
         print(val.value);
         UserID.add(val.value.toString());
@@ -173,155 +175,156 @@ class _MapSampleState extends State<MapSample> {
     }
     return WillPopScope(
         onWillPop: showExitPopup,
-    child:Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppbarColor,
-        title: Text("Family Tracker"),
-      ),
-      body:  Stack(
-          children: <Widget>[
-            GoogleMap(
-              mapType: _currentMapType,
-              initialCameraPosition:  CameraPosition(
-                target: initialLocation,
-                zoom: 14,
-              ),
-              myLocationEnabled: true,
-              myLocationButtonEnabled: true,
-              compassEnabled: true,
-
-              zoomControlsEnabled: true,
-              markers: getmarkers(),
-
-              onMapCreated: (GoogleMapController controller) {
-                mapController =  controller;
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 5, 10, 0),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: FloatingActionButton(
-                  onPressed: _onMapTypeButtonPressed,
-                  materialTapTargetSize: MaterialTapTargetSize.padded,
-                  backgroundColor: Colors.green,
-                  child: const Icon(Icons.map, size: 30.0),
-                ),
-              ),
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(0, 70, 10, 0),
-                child: Align(
-                    alignment: Alignment.topRight,
-                    child:FloatingActionButton(
-                        elevation: 100,
-                        hoverColor: Colors.red,
-                        autofocus: true,
-                        onPressed:() async {
-                          if(phoneNumber.isNotEmpty) {
-                            print("PhoneNumber"+phoneNumber);
-                            await FlutterPhoneDirectCaller.callNumber(phoneNumber);
-                            SMS_send(recipent[0],"Message 1");
-                            SMS_send(recipent[1],"Message 2");
-                            SMS_send(recipent[2],"Message 3");
-                          }
-                          else{
-                            showToast("Cannot able to call as Emergency Contact is not added");
-                          }
-                        },
-                        child: Icon(Icons.call)
-                    ))
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(0, 140, 10, 0),
-                child: Align(
-                    alignment: Alignment.topRight,
-                    child:FloatingActionButton(
-                      elevation: 100,
-                      backgroundColor: Colors.red,
-                      hoverColor: Colors.red,
-                      autofocus: true,
-                      onPressed: _goToTheLake,
-                      child: Icon(Icons.add_location),
-                      tooltip: 'Go to Current Location',
-                    ))
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(0, 210, 10, 0),
-                child: Align(
-                    alignment: Alignment.topRight,
-                    child:FloatingActionButton(
-                      elevation: 100,
-                      backgroundColor: Colors.deepPurple,
-                      hoverColor: Colors.red,
-                      autofocus: true,
-                      onPressed:  sound ,
-                      child: isPlayed? Icon(Icons.play_arrow): Icon(Icons.pause) ,
-                      tooltip: 'Pick Image',
-                    ))
-            )
-          ]),
-      drawer:  Drawer(
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              decoration: BoxDecoration(
-                color: AppbarColor,
-              ),
-              accountName: Text(name),
-              accountEmail: Text(email),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.orange,
-                child: Text(
-                  FirstLetter,
-                  style: TextStyle(fontSize: 40.0),
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.dashboard), title: Text("Dashboard"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Dashboard(familyId: FamilyId)),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.home), title: Text("Add Members"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MemberFile(familyId: FamilyId)),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings), title: Text("Add Emergency Contact"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return EmergencyContact();
-                    },
+        child:Scaffold(
+          appBar: AppBar(
+            backgroundColor: AppbarColor,
+            title: Text("Family Tracker"),
+          ),
+          body:  Stack(
+              children: <Widget>[
+                GoogleMap(
+                  mapType: _currentMapType,
+                  initialCameraPosition:  CameraPosition(
+                    target: initialLocation,
+                    zoom: 14,
                   ),
-                );
-              },
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: true,
+                  compassEnabled: true,
+                  zoomControlsEnabled: true,
+                  markers: getmarkers(),
+                  onMapCreated: (GoogleMapController controller) {
+                    mapController =  controller;
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 5, 10, 0),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: FloatingActionButton(
+                      onPressed: _onMapTypeButtonPressed,
+                      materialTapTargetSize: MaterialTapTargetSize.padded,
+                      backgroundColor: Colors.green,
+                      child: const Icon(Icons.map, size: 30.0),
+                    ),
+                  ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 70, 10, 0),
+                    child: Align(
+                        alignment: Alignment.topRight,
+                        child:FloatingActionButton(
+                            heroTag: "btn1",
+                            elevation: 100,
+                            hoverColor: Colors.red,
+                            autofocus: true,
+                            onPressed:() async {
+                              if(phoneNumber.isNotEmpty) {
+                                print("PhoneNumber"+phoneNumber);
+                                await FlutterPhoneDirectCaller.callNumber(phoneNumber);
+                                SMS_send(recipent[0],"Message 1");
+                                SMS_send(recipent[1],"Message 2");
+                                SMS_send(recipent[2],"Message 3");
+                              }
+                              else{
+                                showToast("Cannot able to call as Emergency Contact is not added");
+                              }
+                            },
+                            child: Icon(Icons.call)
+                        ))
+                ),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 140, 10, 0),
+                    child: Align(
+                        alignment: Alignment.topRight,
+                        child:FloatingActionButton(
+                          heroTag: "btn2",
+                          elevation: 100,
+                          backgroundColor: Colors.red,
+                          hoverColor: Colors.red,
+                          autofocus: true,
+                          onPressed: _goToTheLake,
+                          child: Icon(Icons.add_location),
+                          tooltip: 'Go to Current Location',
+                        ))
+                ),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 210, 10, 0),
+                    child: Align(
+                        alignment: Alignment.topRight,
+                        child:FloatingActionButton(
+                          heroTag: "btn3",
+                          elevation: 100,
+                          backgroundColor: Colors.deepPurple,
+                          hoverColor: Colors.red,
+                          autofocus: true,
+                          onPressed:  sound ,
+                          child: isPlayed? Icon(Icons.play_arrow): Icon(Icons.pause) ,
+                          tooltip: 'Pick Image',
+                        ))
+                )
+              ]),
+          drawer:  Drawer(
+            child: ListView(
+              // Important: Remove any padding from the ListView.
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                UserAccountsDrawerHeader(
+                  decoration: BoxDecoration(
+                    color: AppbarColor,
+                  ),
+                  accountName: Text(name),
+                  accountEmail: Text(email),
+                  currentAccountPicture: CircleAvatar(
+                    backgroundColor: Colors.orange,
+                    child: Text(
+                      FirstLetter,
+                      style: TextStyle(fontSize: 40.0),
+                    ),
+                  ),
+                ),
+                ListTile(
+                  leading: Icon(Icons.dashboard), title: Text("Dashboard"),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Dashboard(familyId: FamilyId)),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.home), title: Text("Add Members"),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MemberFile(familyId: FamilyId)),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.settings), title: Text("Add Emergency Contact"),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return EmergencyContact();
+                        },
+                      ),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.logout), title: Text("Logout"),
+                  onTap: () {
+                    signOut();
+                  },
+                ),
+              ],
             ),
-            ListTile(
-              leading: Icon(Icons.logout), title: Text("Logout"),
-              onTap: () {
-                signOut();
-              },
-            ),
-          ],
-        ),
-      ),
-    )
-   );
+          ),
+        )
+    );
   }
   Future<void> _goToTheLake() async {
     mapController.animateCamera(CameraUpdate.newCameraPosition(_kLake));
@@ -344,6 +347,13 @@ class _MapSampleState extends State<MapSample> {
         assetsAudioPlayer.showNotification=false;
 
       });
+    }
+  }
+  Future<void> _send() async {
+    try {
+      await BackgroundSms.sendMessage( phoneNumber:"08485017950", message: "Please find the location ");
+    }catch(onError){
+      print(onError);
     }
   }
   Future<void> getValue() async {
@@ -370,20 +380,23 @@ class _MapSampleState extends State<MapSample> {
 
   }
   Set<Marker> getmarkers() {
-    for (final item in LatLag) {
+    for (int i = 0; i < NameLoc.length; i++){
       setState(() {
         markers.add(Marker( //add first marker
-          markerId: MarkerId(item.toString()),
-          position: item,
-          infoWindow: InfoWindow( //popup info
-            title: item.toString(),
+          markerId: MarkerId(NameLoc[i]['Loc'].toString()),
+          position: NameLoc[i]['Loc'],
+          // infoWindow: InfoWindow( //popup info
+          //   title:name,
+          // ),
+          infoWindow: InfoWindow(
+            title: NameLoc[i]['name'].toString(),
           ),
           onTap: () {
             if (null != _controller) {
               mapController.animateCamera(
                 CameraUpdate.newCameraPosition(new CameraPosition(
                     bearing: 10.8334901395799,
-                    target: item,
+                    target: NameLoc[i]['Loc'],
                     tilt: 0,
                     zoom: 28.00),
                 ),);
@@ -393,7 +406,7 @@ class _MapSampleState extends State<MapSample> {
         ));
 
       });
-      print("Howdy"+item.toString());
+      print("Howdy"+NameLoc[i].toString());
     }
     return markers;
   }
@@ -421,6 +434,9 @@ class _MapSampleState extends State<MapSample> {
         double long = data['Longitude'];
         LatLng newlocation = LatLng(lat, long);
         LatLag.add(newlocation);
+        Name.add(data['name']);
+        NameLoc.add({"name":data['name'],"Loc":newlocation});
+
         getmarkers();
       }
     });
@@ -436,9 +452,9 @@ class _MapSampleState extends State<MapSample> {
       Map<String, dynamic> data = jsonDecode(
           jsonEncode(event.snapshot.value)) as Map<String, dynamic>;
 
-        print("Emergency Phone Number" + data['name']);
-        print(data['Latitude']);
-        print(data['Longitude']);
+      print("Emergency Phone Number" + data['name']);
+      print(data['Latitude']);
+      print(data['Longitude']);
 
 
     });
