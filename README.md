@@ -1,10 +1,18 @@
 # Family Tracker App
 
-A new Flutter project.
+Are you tired of constantly worrying about your loved ones' safety? Introducing the new location tracking application FamilyTracker with added features such as Location Tracking of you and your family, Emergency Calling and notifying via sms, adding and removing members, and alert sounds.
+
+The app is designed to keep you connected with your friends and family in real-time, no matter where they are. You can track their location, give an emergency call with sms, and even start an alert sound when needed.
+Adding and removing members from your group is simple, making it easy to manage your connections. Whether you're planning a family trip or simply want to stay connected with your loved ones, the FamilyTracker app is the perfect solution.
+
+
+
 
 ## Getting Started
 
 This project is a starting point for a Flutter application.
+
+
 
 A few resources to get you started if this is your first Flutter project:
 
@@ -23,5 +31,14 @@ samples, guidance on mobile development, and a full API reference.
 
 
 
-https://user-images.githubusercontent.com/129506067/230782943-8f01b1a6-c3b6-4277-821b-84eda2c15bdf.mp4
+https://user-images.githubusercontent.com/129506067/235979191-74179e7d-2a9c-476e-85ae-0309e9bb2d4b.mp4
+
+
+
+
+
+
+
+
+
 
